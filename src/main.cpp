@@ -10,7 +10,7 @@ int main()
     int serving_speed = 15;
     int average_product_num = 10;
     int max_queue_len = 5;
-
+    std::cout << "Hello";
     Supermarket supermarket(cashboxes_number, max_num_of_customers, customers_intensity, serving_speed, average_product_num, max_queue_len);
     supermarket.start();
     std::cout << "STATISTICS" << std::endl << std::endl;

@@ -1,12 +1,16 @@
 // Copyright 2022 UNN-IASR
 #pragma once
+
 #include <iostream>
 #include <vector>
 #include <random>
 #include <queue>
 #include <mutex>
 #include <list>
+#include <pthread.h>
+#include <chrono>
 #include <thread>
+#include <pthread_impl.h>
 #include <condition_variable>
 #include <functional>
 

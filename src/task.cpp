@@ -3,6 +3,7 @@
 
 
 
+
 using namespace std;
 
 Supermarket::Supermarket(int cashboxes_number, int max_num_of_customers, int customers_intensity, int serving_speed, int average_product_num, int max_queue_len) {
@@ -135,6 +136,7 @@ void Supermarket::serveSupermarket() {
                 new_line->push(getCustomer());
                 lines.push_back(new_line);
                 cashboxes_WIP.push_back(new std::thread(&Supermarket::serveLine, this, new_line));
+
             }
             else {
                 unserved_customers++;
