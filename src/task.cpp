@@ -3,21 +3,20 @@
 
 
 
-
 using namespace std;
 
-Supermarket::Supermarket(int cashboxes_number, int max_num_of_customers, int customers_intensity, int serving_speed, int average_product_num, int max_queue_len) {
-    cashboxes_number = cashboxes_number;
-    max_num_of_customers = max_num_of_customers;
-    customers_intensity = customers_intensity;
-    serving_speed = serving_speed;
-    average_product_num = average_product_num;
-    max_queue_len = max_queue_len;
+Supermarket::Supermarket(int cashboxes_number1, int max_num_of_customers1, int customers_intensity1, int serving_speed1, int average_product_num1, int max_line_len1) {
+    cashboxes_number = cashboxes_number1;
+    max_num_of_customers = max_num_of_customers1;
+    customers_intensity = customers_intensity1;
+    serving_speed = serving_speed1;
+    average_product_num = average_product_num1;
+    max_line_len = max_line_len1;
 }
 
 
-Customer::Customer(std::vector<int> check) {
-    check = check;
+Customer::Customer(std::vector<int> check1) {
+    check = check1;
 }
 
 
@@ -28,7 +27,7 @@ double Supermarket::getAverageLineLength() {
 double Supermarket::getAverageWaitingTimeForCustomer() {
     double result = 0;
     for (int i = 1; i <= average_line_len; i++) {
-        result += i * (double)(average_product_num * serving_speed);
+        result += i * static_cast<double>(average_product_num * serving_speed);
     }
     return result / average_line_len;
 }
@@ -60,7 +59,7 @@ int Supermarket::getAmountOfUnservedCustomers() {
 Customer* Supermarket::getCustomer() {
     std::vector<int> check(average_product_num);
     for (int i = 0; i < average_product_num; i++) {
-        check[i] = std::rand() % 1000 + 1;
+        check[i] = std::rand() % 100 + 1;
     }
     return new Customer(check);
 }
@@ -70,33 +69,33 @@ void Supermarket::start() {
     for (auto current_line : cashboxes_WIP) {
         current_line->join();
     }
-    average_line_len = all_lines / all_checks_for_customers;
+    average_line_len = static_cast<double>(all_lines / all_checks_for_customers);
 }
 
-void Supermarket::serveCustomer(Customer* customer, int number) {
-    for (auto i = 0; i < customer->check.size(); i++) {
+void Supermarket::serveCustomer(Customer* customer1, int number) {
+    for (auto i = 0; i < customer1->check.size(); i++) {
         std::this_thread::sleep_for(std::chrono::milliseconds(serving_speed));
         std::unique_lock<std::mutex> my_lock(myMutex);
-        average_work_time += serving_speed * (int)(working_cashboxes) / (double)(cashboxes_number);
-        average_down_time += serving_speed * (cashboxes_number - (int)(working_cashboxes)) / (double)(cashboxes_number);
-        std::cout << "CASHBOX №" << std::this_thread::get_id()
-            << "CUSTOMER: " << number << " PRODUCT: " << i + 1 << "\n";
+        average_work_time += static_cast<double>(serving_speed * static_cast<std::int64_t>(working_cashboxes) / static_cast<double>(cashboxes_number));
+        average_down_time += static_cast<double>(serving_speed * (cashboxes_number - static_cast<std::int64_t>(working_cashboxes)) / static_cast<double>(cashboxes_number));
+        std::cout << "CASHBOX #" << std::this_thread::get_id()
+            << " CUSTOMER: " << number << " PRODUCT: " << i + 1 << "\n";
         my_lock.unlock();
     }
     served_customers++;
 }
 
-void Supermarket::serveLine(std::queue<Customer*>* customers) {
+void Supermarket::serveLine(std::queue<Customer*>* customers1) {
     int number_of_served_customers = 1;
     while (!finished) {
-        if (!customers->empty()) {
+        if (!customers1->empty()) {
             int count = 0;
             int iteration = 0;
             std::queue<int>* prevs = new std::queue<int>();
-            while (!customers->empty()) {
-                auto customer = customers->front();
+            while (!customers1->empty()) {
+                auto customer = customers1->front();
                 serveCustomer(customer, number_of_served_customers);
-                customers->pop();
+                customers1->pop();
                 count++;
                 number_of_served_customers++;
                 iteration++;
@@ -121,7 +120,7 @@ void Supermarket::serveSupermarket() {
             }
         }
         bool free_line = false;
-        std::this_thread::sleep_for(std::chrono::milliseconds());
+        std::this_thread::sleep_for(std::chrono::milliseconds(customers_intensity));
         for (auto it = lines.begin(); it != lines.end(); it++) {
             if ((*it)->size() < line_len) {
                 (*it)->push(getCustomer());
@@ -136,7 +135,6 @@ void Supermarket::serveSupermarket() {
                 new_line->push(getCustomer());
                 lines.push_back(new_line);
                 cashboxes_WIP.push_back(new std::thread(&Supermarket::serveLine, this, new_line));
-
             }
             else {
                 unserved_customers++;
