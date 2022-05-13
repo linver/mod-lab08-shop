@@ -36,7 +36,7 @@ TEST(TEST3, get_average_line_length) {
     int max_line_len = 10;
     Supermarket supermarket(cashboxes_number, max_num_of_customers, customers_intensity, serving_speed, average_product_num, max_line_len);
     supermarket.start();
-    ASSERT_EQ(supermarket.getAverageWorkTime(), 240);
+    ASSERT_EQ(supermarket.getAverageWorkTime(), 100);
 }
 
 TEST(TEST4, get_average_downtime) {
@@ -60,5 +60,5 @@ TEST(TEST5, get_average_waiting_time_for_customer) {
     int max_line_len = 10;
     Supermarket supermarket(cashboxes_number, max_num_of_customers, customers_intensity, serving_speed, average_product_num, max_line_len);
     supermarket.start();
-    EXPECT_EQ(supermarket.getAverageWorkTime(), 240);
+    EXPECT_EQ(supermarket.getAverageWorkTime(), 100);
 }
