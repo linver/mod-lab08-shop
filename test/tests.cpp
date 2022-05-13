@@ -17,26 +17,26 @@ TEST(TEST1, create_customer) {
 
 TEST(TEST2, get_served_and_unserved_customers_amount) {
     int cashboxes_number = 5;
-    int max_num_of_customers = 5;
-    int customers_intensity = 1;
+    int max_num_of_customers = 10;
+    int customers_intensity = 2;
     int serving_speed = 5;
     int average_product_num = 10;
     int max_line_len = 10;
     Supermarket supermarket(cashboxes_number, max_num_of_customers, customers_intensity, serving_speed, average_product_num, max_line_len);
     supermarket.start();
-    ASSERT_TRUE((supermarket.getAmountOfUnservedCustomers() == 0) && (supermarket.getAmountOfServedCustomers() == 4));
+    ASSERT_TRUE((supermarket.getAmountOfUnservedCustomers() == 5) && (supermarket.getAmountOfServedCustomers() == 5));
 }
 
 TEST(TEST3, get_average_line_length) {
     int cashboxes_number = 5;
-    int max_num_of_customers = 5;
-    int customers_intensity = 1;
+    int max_num_of_customers = 10;
+    int customers_intensity = 2;
     int serving_speed = 5;
     int average_product_num = 10;
     int max_line_len = 10;
     Supermarket supermarket(cashboxes_number, max_num_of_customers, customers_intensity, serving_speed, average_product_num, max_line_len);
     supermarket.start();
-    ASSERT_EQ(supermarket.getAverageWorkTime(), 153);
+    ASSERT_EQ(supermarket.getAverageWorkTime(), 240);
 }
 
 TEST(TEST4, get_average_downtime) {
@@ -60,5 +60,5 @@ TEST(TEST5, get_average_waiting_time_for_customer) {
     int max_line_len = 10;
     Supermarket supermarket(cashboxes_number, max_num_of_customers, customers_intensity, serving_speed, average_product_num, max_line_len);
     supermarket.start();
-    ASSERT_TRUE(supermarket.getAverageWaitingTimeForCustomer() == 50);
+    ASSERT_TRUE(supermarket.getAverageWorkTime() == 240);
 }
