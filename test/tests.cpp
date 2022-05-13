@@ -24,7 +24,7 @@ TEST(TEST2, get_served_and_unserved_customers_amount) {
     int max_line_len = 10;
     Supermarket supermarket(cashboxes_number, max_num_of_customers, customers_intensity, serving_speed, average_product_num, max_line_len);
     supermarket.start();
-    ASSERT_EQ(supermarket.getAmountOfUnservedCustomers(), 5);
+    ASSERT_EQ(supermarket.getAmountOfUnservedCustomers(), 1);
 }
 
 TEST(TEST3, get_average_line_length) {
